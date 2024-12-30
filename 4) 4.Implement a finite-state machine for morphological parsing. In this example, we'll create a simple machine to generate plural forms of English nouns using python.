@@ -1,0 +1,47 @@
+class MorphologicalFSM:
+    def __init__(self):
+        self.state = "start"
+    def transition(self, char):
+        """Handle transitions between states based on the input character."""
+        if self.state == "start":
+            if char in "sxz" or char in ["sh", "ch"]:
+                self.state = "add_es"
+            elif char == "y":
+                self.state = "replace_y"
+            else:
+                self.state = "add_s"
+    def generate_plural(self, word):
+        """Generate the plural form of a given English noun."""
+        if word.endswith("sh") or word.endswith("ch"):
+            self.transition("sh")  
+        elif word.endswith("y") and word[-2] not in "aeiou":
+            self.transition("y")
+        elif word[-1] in "sxz":
+            self.transition(word[-1])
+        else:
+            self.transition(word[-1])
+        if self.state == "add_es":
+            return word + "es"
+        elif self.state == "replace_y":
+            return word[:-1] + "ies"
+        elif self.state == "add_s":
+            return word + "s"
+        else:
+            raise ValueError("Invalid state")
+fsm = MorphologicalFSM()
+words = ["cat", "dog", "bus", "box", "church", "lady", "baby", "fox"]
+for word in words:
+    plural = fsm.generate_plural(word)
+    print(f"Singular: {word}, Plural: {plural}")
+
+
+
+OUTPUT:-
+Singular: cat, Plural: cats
+Singular: dog, Plural: dogs
+Singular: bus, Plural: buss
+Singular: box, Plural: boxs
+Singular: church, Plural: churchs
+Singular: lady, Plural: ladys
+Singular: baby, Plural: babys
+Singular: fox, Plural: foxs
