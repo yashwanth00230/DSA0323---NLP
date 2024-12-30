@@ -1,0 +1,16 @@
+from nltk.stem import PorterStemmer
+stemmer = PorterStemmer()
+words = ["running", "jumps", "easily", "flying", "happiness", "studies", "studying"]
+stemmed_words = {word: stemmer.stem(word) for word in words}
+for word, stemmed in stemmed_words.items():
+    print(f"Original: {word}, Stemmed: {stemmed}")
+
+
+OUTPUT:-
+Original: running, Stemmed: run
+Original: jumps, Stemmed: jump
+Original: easily, Stemmed: easili
+Original: flying, Stemmed: fli
+Original: happiness, Stemmed: happi
+Original: studies, Stemmed: studi
+Original: studying, Stemmed: studi
