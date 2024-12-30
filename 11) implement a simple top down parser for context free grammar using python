@@ -1,0 +1,52 @@
+class TopDownParser:
+    def __init__(self, grammar):
+        self.grammar = grammar  
+        self.tokens = []
+        self.pos = 0
+    def parse(self, input_string, start_symbol):
+        """Attempt to parse the input string starting from the start symbol."""
+        self.tokens = input_string.split()  
+        self.pos = 0
+        success = self._match(start_symbol)
+        if success and self.pos == len(self.tokens):
+            print("Parsing succeeded!")
+            return True
+        else:
+            print("Parsing failed.")
+            return False
+    def _match(self, symbol):
+        """Recursive matching for a symbol."""
+        if symbol not in self.grammar:  
+            if self.pos < len(self.tokens) and self.tokens[self.pos] == symbol:
+                print(f"Matched terminal: {symbol}")
+                self.pos += 1
+                return True
+            else:
+                return False
+        for production in self.grammar[symbol]:
+            print(f"Trying production: {symbol} -> {' '.join(production)}")
+            start_pos = self.pos
+            if all(self._match(sym) for sym in production):
+                return True
+            self.pos = start_pos  
+        return False
+grammar = {
+    'S': [['a', 'A', 'b']],
+    'A': [['c', 'A'], ['d']]
+}
+parser = TopDownParser(grammar)
+input_string = "a c d b"
+start_symbol = 'S'
+parser.parse(input_string, start_symbol)
+
+
+OUTPUT :-
+Trying production: S -> a A b
+Matched terminal: a
+Trying production: A -> c A
+Matched terminal: c
+Trying production: A -> c A
+Trying production: A -> d
+Matched terminal: d
+Matched terminal: b
+Parsing succeeded!
