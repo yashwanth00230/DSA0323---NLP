@@ -1,0 +1,33 @@
+from nltk.corpus import wordnet
+def explore_word_meanings(word):
+    synsets = wordnet.synsets(word)
+    if not synsets:
+        print(f"No synsets found for the word: {word}")
+        return
+    print(f"Synsets for '{word}':\n")
+    for i, synset in enumerate(synsets, 1):
+        print(f"Synset {i}: {synset.name()}")
+        print(f" - Lemmas: {', '.join(synset.lemma_names())}")
+        print(f" - Definition: {synset.definition()}")
+        print(f" - Examples: {synset.examples()}\n")
+    print("Exploring Hypernyms and Hyponyms:\n")
+    first_synset = synsets[0]
+    hypernyms = first_synset.hypernyms()
+    hyponyms = first_synset.hyponyms()
+    print(f"Hypernyms of '{first_synset.name()}':")
+    for hypernym in hypernyms:
+        print(f" - {hypernym.name()} ({hypernym.definition()})")
+    print("\nHyponyms of '{first_synset.name()}':")
+    for hyponym in hyponyms:
+        print(f" - {hyponym.name()} ({hyponym.definition()})")
+word = "dog"
+import nltk
+nltk.download("wordnet")
+explore_word_meanings(word)
+
+
+OUTPUT:-
+Synset 1: dog.n.01
+ - Lemmas: dog, domestic_dog, Canis_familiaris
+ - Definition: a member of the genus Canis (probably descended from the common wolf) that has been domesticated by man since prehistoric times; occurs in many breeds
+ - Examples: ['the dog barked all night']
